@@ -201,3 +201,61 @@ function checkRow(button) {
     }
   });
 }
+
+// LocalStorage functions
+function saveToStorage() {
+  const data = {};
+  
+  document.querySelectorAll(".card").forEach((card, cardIndex) => {
+    const familyInput = card.querySelector(".family-input");
+    data[`family_${cardIndex}`] = familyInput.value;
+    
+    card.querySelectorAll(".verb-row").forEach((row, rowIndex) => {
+      const verb = row.querySelector("span").innerText;
+      const inputs = row.querySelectorAll("input");
+      data[`${verb}_past`] = inputs[0].value;
+      data[`${verb}_participle`] = inputs[1].value;
+    });
+  });
+  
+  localStorage.setItem("irregularVerbs", JSON.stringify(data));
+}
+
+function loadFromStorage() {
+  const saved = localStorage.getItem("irregularVerbs");
+  if (!saved) return;
+  
+  const data = JSON.parse(saved);
+  
+  document.querySelectorAll(".card").forEach((card, cardIndex) => {
+    const familyInput = card.querySelector(".family-input");
+    if (data[`family_${cardIndex}`]) {
+      familyInput.value = data[`family_${cardIndex}`];
+    }
+    
+    card.querySelectorAll(".verb-row").forEach(row => {
+      const verb = row.querySelector("span").innerText;
+      const inputs = row.querySelectorAll("input");
+      
+      if (data[`${verb}_past`]) inputs[0].value = data[`${verb}_past`];
+      if (data[`${verb}_participle`]) inputs[1].value = data[`${verb}_participle`];
+    });
+  });
+}
+
+function resetAll() {
+  document.querySelectorAll("input").forEach(input => {
+    input.value = "";
+    input.classList.remove("correct", "wrong");
+  });
+  document.getElementById("score").innerText = "";
+  localStorage.removeItem("irregularVerbs");
+}
+
+// Add event listeners to save on input
+document.querySelectorAll("input").forEach(input => {
+  input.addEventListener("input", saveToStorage);
+});
+
+// Load saved data on page load
+loadFromStorage();

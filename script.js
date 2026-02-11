@@ -147,8 +147,8 @@ families.forEach(group => {
     row.className = "verb-row";
     row.innerHTML = `
       <span>${verb}</span>
-      <input class="small" />
-      <input class="small" />
+      <input class="small" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
+      <input class="small" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" />
       <button class="row-check" onclick="checkRow(this)">Check</button>
     `;
     card.appendChild(row);

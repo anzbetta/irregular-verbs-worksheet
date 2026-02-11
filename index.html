@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>Irregular Verb Families – 3 Forms</title>
+
+<style>
+:root {
+  --bg-gradient: linear-gradient(135deg, #c7d2fe, #f5d0fe);
+  --card-bg: rgba(255,255,255,0.85);
+  --border-soft: rgba(255,255,255,0.7);
+  --text-main: #1e293b;
+  --accent: #7c3aed;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background: var(--bg-gradient);
+  min-height: 100vh;
+  padding: 40px 20px;
+  color: #4c1d95; /* глибокий фіолетовий */
+}
+
+
+h1 {
+  text-align: center;
+  margin-bottom: 50px;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #5b21b6;
+}
+
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 24px;
+  align-items: start;
+}
+
+
+
+
+.card {
+  background: var(--card-bg);
+  backdrop-filter: blur(14px);
+  border-radius: 22px;
+  padding: 25px;
+  border: 1px solid var(--border-soft);
+  box-shadow: 0 18px 40px rgba(0,0,0,0.08);
+  height: fit-content;
+}
+
+.family-input {
+  width: 100%;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+  margin-bottom: 18px;
+  font-weight: 600;
+  font-size: 14px;
+  background: #fff;
+  color: #5b21b6;
+}
+
+
+.table-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  color: #6d28d9;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+
+.verb-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 8px;
+  align-items: center;
+}
+
+
+.verb-row span {
+  align-self: center;
+  font-weight: 500;
+  color: #4c1d95;
+}
+
+
+input.small {
+  width: 100%;
+  min-width: 0;
+  padding: 6px 8px;
+  border-radius: 8px;
+  border: 1px solid #c4b5fd;
+  background: #faf5ff;
+  color: #4c1d95;
+}
+
+
+input.correct {
+  border: 2px solid #22c55e;
+  background-color: #ecfdf5;
+}
+
+input.wrong {
+  border: 2px solid #ef4444;
+  background-color: #fef2f2;
+}
+
+.check-btn {
+  display: block;
+  margin: 40px auto;
+  padding: 12px 24px;
+  border-radius: 12px;
+  border: none;
+  background: #7c3aed;
+  color: white;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.check-btn:hover {
+  background: #6d28d9;
+}
+
+.score {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+@media (max-width: 1024px) {
+
+  h1 {
+    font-size: 28px;
+  }
+
+  .card {
+    padding: 20px;
+  }
+
+  .verb-row {
+    gap: 6px;
+  }
+
+}
+
+@media (max-width: 640px) {
+
+  body {
+    padding: 20px 12px;
+  }
+
+  h1 {
+    font-size: 22px;
+    margin-bottom: 30px;
+  }
+
+  .card {
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  /* Колонки стають вертикальними */
+  .verb-row {
+    grid-template-columns: 1fr;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .table-header {
+    display: none;
+  }
+
+  .verb-row span {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  input.small {
+    width: 100%;
+  }
+
+  .family-input {
+    font-size: 13px;
+  }
+
+}
+
+
+</style>
+</head>
+<body>
+
+<h1>Irregular Verb Families – 3 Forms</h1>
+
+<div class="grid" id="grid"></div>
+<button class="check-btn" onclick="checkAnswers()">Check Answers</button>
+<div class="score" id="score"></div>
+
+
+<script>
+
+const families = [
+["Write","Drive","Ride","Wake","Wear","Steal","Break","Speak","Get","Forget","Win"],
+["Begin","Drink","Swim","Sing","Ring","Run","Sit","Give","Forgive","Come","Become"],
+["Spend","Send","Lend","Build","Learn","Burn","Mean","Dream","Smell","Lose"],
+["Read","Put","Cut","Hurt","Shut","Cost","Cast","Hit","Fit","Set","Let","Split","Beat"],
+["Think","Teach","Catch","Bring","Buy","Fight"],
+["Know","Grow","Throw","Blow","Fly","Draw"],
+["Meet","Feed","Speed","Lead","Choose","Shoot"],
+["Take","Stand","Understand"],
+["Feel","Keep","Sleep","Sweep","Leave"],
+["Say","Pay","Lay"],
+["Sell","Tell"],
+["Bite","Hide"],
+["Fall","Hold"],
+["Be","Do","Have","Go","Make","Eat","See","Hear","Find","Light","Say"]
+];
+
+const grid = document.getElementById("grid");
+
+families.forEach(group => {
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <input class="family-input" placeholder="Type Family Name..." />
+    <div class="table-header">
+      <div>Infinitive</div>
+      <div>Past</div>
+      <div>Participle</div>
+    </div>
+  `;
+
+  group.forEach(verb => {
+    const row = document.createElement("div");
+    row.className = "verb-row";
+    row.innerHTML = `
+      <span>${verb}</span>
+      <input class="small" />
+      <input class="small" />
+    `;
+    card.appendChild(row);
+  });
+
+  grid.appendChild(card);
+});
+
+const answers = {
+  Write: ["wrote","written"],
+  Drive: ["drove","driven"],
+  Ride: ["rode","ridden"],
+  Wake: ["woke","woken"],
+  Wear: ["wore","worn"],
+  Swear: ["swore","sworn"],
+  Tear: ["tore","torn"],
+  Bear: ["bore","borne"],
+  Steal: ["stole","stolen"],
+  Break: ["broke","broken"],
+  Speak: ["spoke","spoken"],
+  Get: ["got","gotten"],
+  Forget: ["forgot","forgotten"],
+  Win: ["won","won"],
+  Begin: ["began","begun"],
+  Drink: ["drank","drunk"],
+  Swim: ["swam","swum"],
+  Sing: ["sang","sung"],
+  Ring: ["rang","rung"],
+  Sink: ["sank","sunk"],
+  Stink: ["stank","stunk"],
+  Run: ["ran","run"],
+  Sit: ["sat","sat"],
+  Give: ["gave","given"],
+  Forgive: ["forgave","forgiven"],
+  Come: ["came","come"],
+  Become: ["became","become"],
+  Spend: ["spent","spent"],
+  Send: ["sent","sent"],
+  Lend: ["lent","lent"],
+  Build: ["built","built"],
+  Learn: ["learnt","learnt"],
+  Burn: ["burnt","burnt"],
+  Mean: ["meant","meant"],
+  Dream: ["dreamt","dreamt"],
+  Deal: ["dealt","dealt"],
+  Smell: ["smelt","smelt"],
+  Spell: ["spelt","spelt"],
+  Lose: ["lost","lost"],
+  Read: ["read","read"],
+  Put: ["put","put"],
+  Cut: ["cut","cut"],
+  Hurt: ["hurt","hurt"],
+  Shut: ["shut","shut"],
+  Cost: ["cost","cost"],
+  Cast: ["cast","cast"],
+  Broadcast: ["broadcast","broadcast"],
+  Hit: ["hit","hit"],
+  Fit: ["fit","fit"],
+  Set: ["set","set"],
+  Let: ["let","let"],
+  Spread: ["spread","spread"],
+  Split: ["split","split"],
+  Beat: ["beat","beaten"],
+  Burst: ["burst","burst"],
+  Think: ["thought","thought"],
+  Teach: ["taught","taught"],
+  Catch: ["caught","caught"],
+  Bring: ["brought","brought"],
+  Buy: ["bought","bought"],
+  Fight: ["fought","fought"],
+  Seek: ["sought","sought"],
+  Know: ["knew","known"],
+  Grow: ["grew","grown"],
+  Throw: ["threw","thrown"],
+  Blow: ["blew","blown"],
+  Fly: ["flew","flown"],
+  Draw: ["drew","drawn"],
+  Meet: ["met","met"],
+  Feed: ["fed","fed"],
+  Speed: ["sped","sped"],
+  Bleed: ["bled","bled"],
+  Lead: ["led","led"],
+  Choose: ["chose","chosen"],
+  Shoot: ["shot","shot"],
+  Take: ["took","taken"],
+  Mistake: ["mistook","mistaken"],
+  Stand: ["stood","stood"],
+  Understand: ["understood","understood"],
+  Feel: ["felt","felt"],
+  Keep: ["kept","kept"],
+  Sleep: ["slept","slept"],
+  Sweep: ["swept","swept"],
+  Weep: ["wept","wept"],
+  Leave: ["left","left"],
+  Stick: ["stuck","stuck"],
+  Hang: ["hung","hung"],
+  Swing: ["swung","swung"],
+  Say: ["said","said"],
+  Pay: ["paid","paid"],
+  Lay: ["laid","laid"],
+  Sell: ["sold","sold"],
+  Tell: ["told","told"],
+  Bite: ["bit","bitten"],
+  Hide: ["hid","hidden"],
+  Fall: ["fell","fallen"],
+  Hold: ["held","held"],
+  Be: ["was/were","been"],
+  Do: ["did","done"],
+  Have: ["had","had"],
+  Go: ["went","gone"],
+  Make: ["made","made"],
+  Eat: ["ate","eaten"],
+  See: ["saw","seen"],
+  Hear: ["heard","heard"],
+  Find: ["found","found"],
+  Forbid: ["forbade","forbidden"],
+  Light: ["lit","lit"],
+};
+
+function checkAnswers() {
+  let correct = 0;
+  let total = 0;
+
+  document.querySelectorAll(".verb-row").forEach(row => {
+    const verb = row.querySelector("span").innerText;
+    const inputs = row.querySelectorAll("input");
+
+    if (!answers[verb]) return;
+
+    inputs.forEach((input, i) => {
+      total++;
+      input.classList.remove("correct","wrong");
+
+      if (input.value.trim().toLowerCase() === answers[verb][i]) {
+        input.classList.add("correct");
+        correct++;
+      } else {
+        input.classList.add("wrong");
+      }
+    });
+  });
+
+  document.getElementById("score").innerText =
+    `Score: ${correct} / ${total}`;
+}
+
+</script>
+
+</body>
+</html>

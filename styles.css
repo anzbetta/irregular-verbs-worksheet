@@ -88,7 +88,7 @@ h1 {
   border: 2px solid #ddd;
   margin-bottom: 18px;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 16px;
   background: #fff;
   color: #5b21b6;
 }
@@ -267,7 +267,7 @@ input.wrong {
   }
 
   .family-input {
-    font-size: 13px;
+    font-size: 16px;
   }
 
 }

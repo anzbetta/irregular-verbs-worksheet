@@ -58,17 +58,22 @@ const answers = {
 const grid = document.getElementById("grid");
 
 function disablePredictive(input){
+
   input.type = "text";
-  input.name = "calc-field";
-  input.setAttribute("readonly", "readonly");
-  input.addEventListener("touchstart", function() { this.removeAttribute('readonly'); });
-  input.addEventListener("mousedown", function() { this.removeAttribute('readonly'); });
-  input.setAttribute("autocomplete", "off");
-  input.setAttribute("autocorrect", "off");
-  input.setAttribute("autocapitalize", "none");
-  input.setAttribute("spellcheck", "false");
-  input.inputMode = "none";
+  input.readOnly = true;
+
+  input.setAttribute("autocomplete","off");
+  input.setAttribute("autocorrect","off");
+  input.setAttribute("autocapitalize","none");
+  input.setAttribute("spellcheck","false");
+  input.setAttribute("inputmode","none");
+
+  input.addEventListener("focus", () => {
+    input.removeAttribute("readonly");
+  });
+
 }
+
 
 families.forEach(group=>{
   const card=document.createElement("div");

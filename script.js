@@ -59,15 +59,14 @@ const grid = document.getElementById("grid");
 
 function disablePredictive(input){
   input.type = "text";
-
-  input.setAttribute("autocomplete","one-time-code");
-  input.setAttribute("autocorrect","off");
-  input.setAttribute("autocapitalize","off");
-  input.setAttribute("spellcheck","false");
-
-  input.inputMode = "latin";
-
-  input.style.textTransform = "none";
+  input.name = "calc-field";
+  input.readOnly = true;
+  input.onfocus = function() { this.removeAttribute('readonly'); };
+  input.setAttribute("autocomplete", "off");
+  input.setAttribute("autocorrect", "off");
+  input.setAttribute("autocapitalize", "none");
+  input.setAttribute("spellcheck", "false");
+  input.inputMode = "none";
 }
 
 families.forEach(group=>{

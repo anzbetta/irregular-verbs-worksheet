@@ -1,20 +1,3 @@
-const families = [
-  ["Write","Drive","Ride","Wake","Wear","Steal","Break","Speak","Get","Forget","Win"],
-  ["Begin","Drink","Swim","Sing","Ring","Run","Sit","Give","Forgive","Come","Become"],
-  ["Spend","Send","Lend","Build","Learn","Burn","Mean","Dream","Smell","Lose"],
-  ["Read","Put","Cut","Hurt","Cost","Cast","Hit","Fit","Set","Let","Beat"],
-  ["Think","Teach","Catch","Bring","Buy","Fight"],
-  ["Know","Grow","Throw","Blow","Fly","Draw"],
-  ["Meet","Feed","Speed","Choose"],
-  ["Take","Stand","Understand"],
-  ["Feel","Keep","Sleep","Sweep","Leave"],
-  ["Say","Pay","Lay"],
-  ["Sell","Tell"],
-  ["Bite","Hide"],
-  ["Fall","Hold"],
-  ["Be","Do","Have","Go","Make","Eat","See","Hear","Find","Light","Say"]
-];
-
 const answers = {
   Write:["wrote","written"],Drive:["drove","driven"],Ride:["rode","ridden"],
   Wake:["woke","woken"],Wear:["wore","worn"],Steal:["stole","stolen"],
@@ -54,72 +37,6 @@ const answers = {
   See:["saw","seen"],Hear:["heard","heard"],
   Find:["found","found"],Light:["lit","lit"]
 };
-
-const grid = document.getElementById("grid");
-
-function disablePredictive(input){
-
-  input.type = "text";
-  input.readOnly = true;
-
-  input.setAttribute("autocomplete","off");
-  input.setAttribute("autocorrect","off");
-  input.setAttribute("autocapitalize","none");
-  input.setAttribute("spellcheck","false");
-
-  input.addEventListener("focus", () => {
-    input.removeAttribute("readonly");
-  });
-
-}
-
-
-families.forEach(group=>{
-  const card=document.createElement("div");
-  card.className="card";
-
-  const fam=document.createElement("input");
-  fam.className="family-input";
-  fam.placeholder="Type Family Name...";
-  disablePredictive(fam);
-
-  const header=document.createElement("div");
-  header.className="table-header";
-  header.innerHTML=`
-    <div>Infinitive</div>
-    <div>Past</div>
-    <div>Participle</div>
-    <div></div>
-  `;
-
-  card.append(fam,header);
-
-  group.forEach(verb=>{
-    const row=document.createElement("div");
-    row.className="verb-row";
-
-    const span=document.createElement("span");
-    span.innerText=verb;
-
-    const past=document.createElement("input");
-    past.className="small";
-    disablePredictive(past);
-
-    const part=document.createElement("input");
-    part.className="small";
-    disablePredictive(part);
-
-    const btn=document.createElement("button");
-    btn.className="row-check";
-    btn.innerText="Check";
-    btn.onclick=()=>checkRow(btn);
-
-    row.append(span,past,part,btn);
-    card.appendChild(row);
-  });
-
-  grid.appendChild(card);
-});
 
 function checkAnswers(){
   let correct=0,total=0;

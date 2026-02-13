@@ -60,7 +60,7 @@ const grid = document.getElementById("grid");
 function disablePredictive(input){
   input.type = "text";
   input.name = "calc-field";
-  input.readOnly = true;
+  input.setAttribute("readonly", "readonly");
   input.onfocus = function() { this.removeAttribute('readonly'); };
   input.setAttribute("autocomplete", "off");
   input.setAttribute("autocorrect", "off");

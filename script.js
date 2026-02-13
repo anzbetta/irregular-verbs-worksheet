@@ -61,7 +61,8 @@ function disablePredictive(input){
   input.type = "text";
   input.name = "calc-field";
   input.setAttribute("readonly", "readonly");
-  input.onfocus = function() { this.removeAttribute('readonly'); };
+  input.addEventListener("touchstart", function() { this.removeAttribute('readonly'); });
+  input.addEventListener("mousedown", function() { this.removeAttribute('readonly'); });
   input.setAttribute("autocomplete", "off");
   input.setAttribute("autocorrect", "off");
   input.setAttribute("autocapitalize", "none");

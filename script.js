@@ -57,61 +57,65 @@ const answers = {
 
 const grid = document.getElementById("grid");
 
-families.forEach(group => {
-  const card = document.createElement("div");
-  card.className = "card";
+function disablePredictive(input){
+  input.type = "text";
 
-  const familyInput = document.createElement("input");
-  familyInput.className = "family-input";
-  familyInput.placeholder = "Type Family Name...";
-  disableT9(familyInput);
+  input.setAttribute("autocomplete","one-time-code");
+  input.setAttribute("autocorrect","off");
+  input.setAttribute("autocapitalize","off");
+  input.setAttribute("spellcheck","false");
 
-  const header = document.createElement("div");
-  header.className = "table-header";
-  header.innerHTML = `
+  input.inputMode = "latin";
+
+  input.style.textTransform = "none";
+}
+
+families.forEach(group=>{
+  const card=document.createElement("div");
+  card.className="card";
+
+  const fam=document.createElement("input");
+  fam.className="family-input";
+  fam.placeholder="Type Family Name...";
+  disablePredictive(fam);
+
+  const header=document.createElement("div");
+  header.className="table-header";
+  header.innerHTML=`
     <div>Infinitive</div>
     <div>Past</div>
     <div>Participle</div>
     <div></div>
   `;
 
-  card.append(familyInput, header);
+  card.append(fam,header);
 
-  group.forEach(verb => {
-    const row = document.createElement("div");
-    row.className = "verb-row";
+  group.forEach(verb=>{
+    const row=document.createElement("div");
+    row.className="verb-row";
 
-    const span = document.createElement("span");
-    span.innerText = verb;
+    const span=document.createElement("span");
+    span.innerText=verb;
 
-    const pastInput = document.createElement("input");
-    pastInput.className = "small";
-    disableT9(pastInput);
+    const past=document.createElement("input");
+    past.className="small";
+    disablePredictive(past);
 
-    const partInput = document.createElement("input");
-    partInput.className = "small";
-    disableT9(partInput);
+    const part=document.createElement("input");
+    part.className="small";
+    disablePredictive(part);
 
-    const btn = document.createElement("button");
-    btn.className = "row-check";
-    btn.innerText = "Check";
-    btn.onclick = () => checkRow(btn);
+    const btn=document.createElement("button");
+    btn.className="row-check";
+    btn.innerText="Check";
+    btn.onclick=()=>checkRow(btn);
 
-    row.append(span, pastInput, partInput, btn);
+    row.append(span,past,part,btn);
     card.appendChild(row);
   });
 
   grid.appendChild(card);
 });
-
-function disableT9(input){
-  input.type = "text";
-  input.autocorrect = "off";
-  input.autocomplete = "off";
-  input.autocapitalize = "off";
-  input.spellcheck = false;
-  input.inputMode = "text";
-}
 
 function checkAnswers(){
   let correct=0,total=0;
@@ -122,7 +126,7 @@ function checkAnswers(){
     inputs.forEach((input,i)=>{
       total++;
       input.classList.remove("correct","wrong");
-      if(input.value.trim().toLowerCase()===answers[verb][i].toLowerCase()){
+      if(input.value.trim().toLowerCase()===answers[verb][i]){
         input.classList.add("correct");correct++;
       }else{input.classList.add("wrong");}
     });
@@ -137,7 +141,7 @@ function checkRow(button){
   if(!answers[verb])return;
   inputs.forEach((input,i)=>{
     input.classList.remove("correct","wrong");
-    if(input.value.trim().toLowerCase()===answers[verb][i].toLowerCase()){
+    if(input.value.trim().toLowerCase()===answers[verb][i]){
       input.classList.add("correct");
     }else{input.classList.add("wrong");}
   });
@@ -181,7 +185,7 @@ function resetAll(){
   localStorage.removeItem("irregularVerbs");
 }
 
-document.addEventListener("input",(e)=>{
+document.addEventListener("input",e=>{
   if(e.target.tagName==="INPUT"){saveToStorage();}
 });
 

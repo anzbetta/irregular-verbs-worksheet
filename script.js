@@ -60,12 +60,16 @@ const grid = document.getElementById("grid");
 function disablePredictive(input){
 
   input.type = "text";
+  input.readOnly = true;
 
   input.setAttribute("autocomplete","off");
   input.setAttribute("autocorrect","off");
   input.setAttribute("autocapitalize","none");
   input.setAttribute("spellcheck","false");
-  input.setAttribute("inputmode","none");
+
+  input.addEventListener("focus", () => {
+    input.removeAttribute("readonly");
+  });
 
 }
 
